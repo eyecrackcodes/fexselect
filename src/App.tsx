@@ -1,195 +1,173 @@
-import React, { useState, useEffect } from 'react';
-import { ScriptData, CustomerData, AppState, Carrier } from './types';
-import ScriptDisplay from './components/ScriptDisplay/ScriptDisplay';
+import React, { useState } from 'react';
+import './App.css';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { LeadProvider } from './contexts/LeadContext';
+import Login from './components/Auth/Login';
+import SignUp from './components/Auth/SignUp';
 import Navigation from './components/Navigation/Navigation';
+import ScriptDisplay from './components/ScriptDisplay/ScriptDisplay';
+import QuoteCalculator from './components/QuoteCalculator/QuoteCalculator';
 import CarrierReference from './components/CarrierReference/CarrierReference';
 import CustomerDataSummary from './components/CustomerDataSummary/CustomerDataSummary';
-import scriptData from './data/script-sections.json';
-import carrierData from './data/carriers.json';
+import AgentProfile from './components/AgentProfile/AgentProfile';
+import LeadManagement from './components/LeadManagement/LeadManagement';
 
-function App() {
-  const [appState, setAppState] = useState<AppState>({
-    currentSection: 0,
-    customerData: {},
-    completedSections: [],
-    isCallActive: false,
-  });
+const AuthenticatedApp: React.FC = () => {
+  const { user, agent, loading } = useAuth();
+  const [activeTab, setActiveTab] = useState('leads');
 
-  const [showCarrierReference, setShowCarrierReference] = useState(false);
-  const [showCustomerSummary, setShowCustomerSummary] = useState(false);
-
-  const sections = (scriptData as ScriptData).sections;
-  const carriers = (carrierData as { carriers: Carrier[] }).carriers;
-
-  // Auto-save customer data to localStorage
-  useEffect(() => {
-    localStorage.setItem('customerData', JSON.stringify(appState.customerData));
-  }, [appState.customerData]);
-
-  // Load saved data on startup
-  useEffect(() => {
-    const savedData = localStorage.getItem('customerData');
-    if (savedData) {
-      try {
-        const parsedData = JSON.parse(savedData);
-        setAppState(prev => ({
-          ...prev,
-          customerData: parsedData
-        }));
-      } catch (error) {
-        console.error('Error loading saved data:', error);
-      }
-    }
-  }, []);
-
-  const handleDataChange = (fieldId: string, value: any) => {
-    setAppState(prev => ({
-      ...prev,
-      customerData: {
-        ...prev.customerData,
-        [fieldId]: value
-      }
-    }));
-  };
-
-  const handleNextSection = () => {
-    if (appState.currentSection < sections.length - 1) {
-      const currentSectionId = sections[appState.currentSection].id;
-      setAppState(prev => ({
-        ...prev,
-        currentSection: prev.currentSection + 1,
-        completedSections: Array.from(new Set([...prev.completedSections, currentSectionId]))
-      }));
-    }
-  };
-
-  const handlePreviousSection = () => {
-    if (appState.currentSection > 0) {
-      setAppState(prev => ({
-        ...prev,
-        currentSection: prev.currentSection - 1
-      }));
-    }
-  };
-
-  const handleGoToSection = (sectionIndex: number) => {
-    setAppState(prev => ({
-      ...prev,
-      currentSection: sectionIndex
-    }));
-  };
-
-  const handleNewCall = () => {
-    setAppState({
-      currentSection: 0,
-      customerData: {},
-      completedSections: [],
-      isCallActive: true,
-      callStartTime: new Date()
-    });
-    localStorage.removeItem('customerData');
-  };
-
-  const canProceedToNext = () => {
-    const currentSection = sections[appState.currentSection];
-    const requiredFields = currentSection.content
-      .filter(item => item.type === 'input_field' && item.required)
-      .map(item => item.id);
-    
-    return requiredFields.every(fieldId => 
-      appState.customerData[fieldId as keyof CustomerData]
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600 mx-auto"></div>
+          <p className="mt-4 text-gray-600">Loading...</p>
+        </div>
+      </div>
     );
+  }
+
+  if (!user) {
+    return <AuthFlow />;
+  }
+
+  // Show profile setup if agent profile is incomplete
+  if (!agent || !agent.name || !agent.npn_number) {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <div className="max-w-2xl mx-auto pt-8">
+          <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+            <h3 className="text-lg font-medium text-yellow-800">Complete Your Profile</h3>
+            <p className="text-yellow-700 mt-1">
+              Please complete your agent profile to access the application.
+            </p>
+          </div>
+          <AgentProfile />
+        </div>
+      </div>
+    );
+  }
+
+  const renderActiveComponent = () => {
+    switch (activeTab) {
+      case 'leads':
+        return <LeadManagement />;
+      case 'script':
+        return <ScriptDisplay />;
+      case 'calculator':
+        return <QuoteCalculator />;
+      case 'carriers':
+        return <CarrierReference />;
+      case 'summary':
+        return <CustomerDataSummary />;
+      case 'profile':
+        return <AgentProfile />;
+      default:
+        return <LeadManagement />;
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex">
-      {/* Main Content Area */}
-      <div className="flex-1 flex flex-col">
-        {/* Header */}
-        <header className="bg-white shadow-sm border-b border-gray-200 px-6 py-4">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen bg-gray-50">
+      <header className="bg-white shadow-sm border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex justify-between items-center py-4">
             <div className="flex items-center space-x-4">
-              <h1 className="text-2xl font-bold text-gray-900">
-                Final Expense Select
-              </h1>
-              <div className="text-sm text-gray-500">
-                Script Application v1.0
-              </div>
+              <h1 className="text-2xl font-bold text-gray-900">FEX Select</h1>
+              <span className="text-sm text-gray-500">
+                Welcome, {agent.name}
+              </span>
             </div>
-            <div className="flex items-center space-x-4">
+            <nav className="flex space-x-8">
               <button
-                onClick={() => setShowCustomerSummary(!showCustomerSummary)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                onClick={() => setActiveTab('leads')}
+                className={`px-3 py-2 text-sm font-medium rounded-md ${
+                  activeTab === 'leads'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
               >
-                Customer Data
+                Leads
               </button>
               <button
-                onClick={() => setShowCarrierReference(!showCarrierReference)}
-                className="px-4 py-2 text-sm font-medium text-gray-700 bg-white border border-gray-300 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                onClick={() => setActiveTab('script')}
+                className={`px-3 py-2 text-sm font-medium rounded-md ${
+                  activeTab === 'script'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
               >
-                Carrier Reference
+                Script
               </button>
               <button
-                onClick={handleNewCall}
-                className="px-4 py-2 text-sm font-medium text-white bg-primary-600 border border-transparent rounded-md hover:bg-primary-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500"
+                onClick={() => setActiveTab('calculator')}
+                className={`px-3 py-2 text-sm font-medium rounded-md ${
+                  activeTab === 'calculator'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
               >
-                New Call
+                Calculator
               </button>
-            </div>
+              <button
+                onClick={() => setActiveTab('carriers')}
+                className={`px-3 py-2 text-sm font-medium rounded-md ${
+                  activeTab === 'carriers'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Carriers
+              </button>
+              <button
+                onClick={() => setActiveTab('summary')}
+                className={`px-3 py-2 text-sm font-medium rounded-md ${
+                  activeTab === 'summary'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Summary
+              </button>
+              <button
+                onClick={() => setActiveTab('profile')}
+                className={`px-3 py-2 text-sm font-medium rounded-md ${
+                  activeTab === 'profile'
+                    ? 'bg-blue-100 text-blue-700'
+                    : 'text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Profile
+              </button>
+            </nav>
           </div>
-        </header>
+        </div>
+      </header>
 
-        {/* Navigation */}
-        <Navigation
-          currentSection={appState.currentSection}
-          totalSections={sections.length}
-          onNext={handleNextSection}
-          onPrevious={handlePreviousSection}
-          onGoToSection={handleGoToSection}
-          canProceed={canProceedToNext()}
-        />
-
-        {/* Script Display */}
-        <main className="flex-1 px-6 py-6">
-          <ScriptDisplay
-            section={sections[appState.currentSection]}
-            customerData={appState.customerData}
-            onDataChange={handleDataChange}
-          />
-        </main>
-
-        {/* Footer */}
-        <footer className="bg-white border-t border-gray-200 px-6 py-4">
-          <div className="flex items-center justify-between text-sm text-gray-500">
-            <div>
-              {appState.isCallActive && appState.callStartTime && (
-                <span>
-                  Call started: {appState.callStartTime.toLocaleTimeString()}
-                </span>
-              )}
-            </div>
-            <div>
-              Section {appState.currentSection + 1} of {sections.length}
-            </div>
-          </div>
-        </footer>
-      </div>
-
-      {/* Sidebar Panels */}
-      {showCarrierReference && (
-        <CarrierReference
-          carriers={carriers}
-          onClose={() => setShowCarrierReference(false)}
-        />
-      )}
-
-      {showCustomerSummary && (
-        <CustomerDataSummary
-          customerData={appState.customerData}
-          onClose={() => setShowCustomerSummary(false)}
-        />
-      )}
+      <main className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        {renderActiveComponent()}
+      </main>
     </div>
+  );
+};
+
+const AuthFlow: React.FC = () => {
+  const [isLogin, setIsLogin] = useState(true);
+
+  return isLogin ? (
+    <Login onToggleMode={() => setIsLogin(false)} />
+  ) : (
+    <SignUp onToggleMode={() => setIsLogin(true)} />
+  );
+};
+
+function App() {
+  return (
+    <AuthProvider>
+      <LeadProvider>
+        <AuthenticatedApp />
+      </LeadProvider>
+    </AuthProvider>
   );
 }
 

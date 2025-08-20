@@ -1,12 +1,27 @@
 import React from 'react';
 import { CustomerData } from '../../types';
+import { useLead } from '../../contexts/LeadContext';
 
 interface CustomerDataSummaryProps {
-  customerData: CustomerData;
-  onClose: () => void;
+  customerData?: CustomerData;
+  onClose?: () => void;
 }
 
 const CustomerDataSummary: React.FC<CustomerDataSummaryProps> = ({ customerData, onClose }) => {
+  const { currentLead } = useLead();
+  
+  // Use lead data if available, otherwise fall back to customerData prop
+  const displayData = currentLead ? {
+    firstName: currentLead.first_name,
+    lastName: currentLead.last_name,
+    email: currentLead.email,
+    phone: currentLead.phone,
+    dateOfBirth: currentLead.date_of_birth,
+    gender: currentLead.gender,
+    tobaccoUse: currentLead.tobacco_use,
+    coverageAmount: currentLead.coverage_amount,
+    premiumBudget: currentLead.premium_budget,
+  } : customerData || {};
   const formatFieldName = (key: string): string => {
     return key
       .replace(/_/g, ' ')
