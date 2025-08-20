@@ -3,11 +3,29 @@ import { createClient } from '@supabase/supabase-js'
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY
 
+console.log('Supabase URL:', supabaseUrl ? 'Set' : 'Not set')
+console.log('Supabase Key:', supabaseAnonKey ? 'Set' : 'Not set')
+
 if (!supabaseUrl || !supabaseAnonKey) {
+  console.error('Environment variables:', {
+    REACT_APP_SUPABASE_URL: supabaseUrl,
+    REACT_APP_SUPABASE_ANON_KEY: supabaseAnonKey ? '[HIDDEN]' : 'Not set'
+  })
   throw new Error('Missing Supabase environment variables. Please check your .env file.')
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
+
+// Test connection
+supabase.auth.getSession().then(({ data, error }) => {
+  if (error) {
+    console.error('Supabase connection error:', error)
+  } else {
+    console.log('Supabase connection successful')
+  }
+}).catch((error) => {
+  console.error('Failed to connect to Supabase:', error)
+})
 
 // Database types
 export interface Agent {

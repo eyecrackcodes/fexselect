@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
 import { ScriptSection, CustomerData, ScriptContent } from '../../types';
 import FormInput from '../FormInput/FormInput';
+import CarrierRecommendations from '../CarrierRecommendations/CarrierRecommendations';
 
 interface ScriptDisplayProps {
   section: ScriptSection;
   customerData: CustomerData;
   onDataChange: (fieldId: string, value: any) => void;
+  agentName?: string;
+  agentNpn?: string;
 }
 
 const ScriptDisplay: React.FC<ScriptDisplayProps> = ({
   section,
   customerData,
-  onDataChange
+  onDataChange,
+  agentName,
+  agentNpn
 }) => {
   const [expandedBranches, setExpandedBranches] = useState<Set<string>>(new Set());
+  const [showCarrierRecommendations, setShowCarrierRecommendations] = useState(false);
 
   const toggleBranch = (fieldId: string) => {
     const newExpanded = new Set(expandedBranches);
@@ -23,6 +29,53 @@ const ScriptDisplay: React.FC<ScriptDisplayProps> = ({
       newExpanded.add(fieldId);
     }
     setExpandedBranches(newExpanded);
+  };
+
+  // Function to replace placeholders in script text
+  const replacePlaceholders = (text: string | undefined): string => {
+    if (!text) return '';
+    
+    let processedText = text;
+    
+    // Replace agent name placeholders
+    if (agentName) {
+      const firstName = agentName.split(' ')[0];
+      processedText = processedText
+        .replace(/\[agent full name\]/gi, agentName)
+        .replace(/\(agent's first name\)/gi, firstName)
+        .replace(/\(agent first name\)/gi, firstName);
+    }
+    
+    // Replace customer name placeholders with actual data
+    const customerFirstName = customerData.customer_first_name || '[Customer First Name]';
+    const customerLastName = customerData.customer_last_name || '[Customer Last Name]';
+    const customerState = customerData.customer_state || '[STATE]';
+    const customerPhone = customerData.customer_phone || '[Phone Number]';
+    // Use agent's NPN from profile instead of customer data
+    const producerNumber = agentNpn || '[Producer Number]';
+    
+    processedText = processedText
+      .replace(/\(customer's first name\)/gi, customerFirstName)
+      .replace(/\(customer first name\)/gi, customerFirstName)
+      .replace(/\(Client\)/gi, customerFirstName)
+      .replace(/\(CLIENT\)/gi, customerFirstName)
+      .replace(/\(Mr\. \/ Ms\. Customer's Last name\)/gi, `${customerLastName ? 'Mr./Ms. ' + customerLastName : '[Customer Last Name]'}`)
+      .replace(/\(Mr\. \/ Ms\. ______\)/gi, `${customerLastName ? 'Mr./Ms. ' + customerLastName : 'Mr./Ms. [Customer Last Name]'}`)
+      .replace(/Mr\. \/ Ms\. ______/gi, `${customerLastName ? 'Mr./Ms. ' + customerLastName : 'Mr./Ms. [Customer Last Name]'}`)
+      .replace(/\[STATE\]/gi, customerState)
+      .replace(/______/g, (match, offset) => {
+        // Context-aware replacement for blanks
+        const beforeText = processedText.substring(Math.max(0, offset - 50), offset).toLowerCase();
+        if (beforeText.includes('producer number') || beforeText.includes('npn')) {
+          return producerNumber;
+        }
+        if (beforeText.includes('telephone') || beforeText.includes('phone')) {
+          return customerPhone;
+        }
+        return match; // Keep original if we can't determine context
+      });
+    
+    return processedText;
   };
 
   const renderContent = (content: ScriptContent[], level: number = 0) => {
@@ -35,7 +88,7 @@ const ScriptDisplay: React.FC<ScriptDisplayProps> = ({
             <div key={key} className={`mb-4 ${level > 0 ? 'ml-6' : ''}`}>
               <div className="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-r-md">
                 <p className="font-semibold text-blue-900 leading-relaxed">
-                  {item.text}
+                  {replacePlaceholders(item.text)}
                 </p>
               </div>
             </div>
@@ -46,7 +99,7 @@ const ScriptDisplay: React.FC<ScriptDisplayProps> = ({
             <div key={key} className={`mb-4 ${level > 0 ? 'ml-6' : ''}`}>
               <div className="bg-red-50 border-l-4 border-red-400 p-4 rounded-r-md">
                 <p className="font-medium text-red-800 text-sm">
-                  {item.text}
+                  {replacePlaceholders(item.text)}
                 </p>
               </div>
             </div>
@@ -97,7 +150,7 @@ const ScriptDisplay: React.FC<ScriptDisplayProps> = ({
             <div key={key} className={`mb-4 ${level > 0 ? 'ml-6' : ''}`}>
               <div className="bg-green-50 border-l-4 border-green-400 p-4 rounded-r-md">
                 <p className="italic text-green-800">
-                  Customer Response: {item.text}
+                  Customer Response: {replacePlaceholders(item.text)}
                 </p>
               </div>
             </div>
@@ -169,6 +222,39 @@ const ScriptDisplay: React.FC<ScriptDisplayProps> = ({
           </div>
         </div>
       </div>
+
+      {/* Carrier Recommendations Button - Show only for medical questions section */}
+      {section.id === 'medical_questions' && customerData.customer_age && (
+        <div className="mt-6 p-4 bg-gradient-to-r from-green-50 to-blue-50 border border-green-200 rounded-lg">
+          <div className="flex items-center justify-between">
+            <div>
+              <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                Get Carrier Recommendations
+              </h3>
+              <p className="text-sm text-gray-600">
+                Based on the health information provided, see which carriers are the best fit for this customer.
+              </p>
+            </div>
+            <button
+              onClick={() => setShowCarrierRecommendations(true)}
+              className="px-4 py-2 bg-primary-600 text-white rounded-md hover:bg-primary-700 transition-colors flex items-center space-x-2"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <span>View Recommendations</span>
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Carrier Recommendations Modal */}
+      {showCarrierRecommendations && (
+        <CarrierRecommendations
+          customerData={customerData}
+          onClose={() => setShowCarrierRecommendations(false)}
+        />
+      )}
     </div>
   );
 };

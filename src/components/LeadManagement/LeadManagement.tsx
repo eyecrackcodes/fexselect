@@ -38,26 +38,34 @@ const LeadManagement: React.FC = () => {
     setError('')
     setSuccess('')
 
-    const { data, error } = await createLead(formData)
+    try {
+      console.log('Submitting lead data:', formData)
+      const { data, error } = await createLead(formData)
 
-    if (error) {
-      setError(error.message)
-    } else {
-      setSuccess('Lead created successfully!')
-      setFormData({
-        first_name: '',
-        last_name: '',
-        email: '',
-        phone: '',
-        date_of_birth: '',
-        gender: '',
-        tobacco_use: false,
-        health_conditions: [],
-        coverage_amount: 0,
-        coverage_type: '',
-        premium_budget: 0,
-      })
-      setShowForm(false)
+      if (error) {
+        console.error('Error creating lead:', error)
+        setError(`Failed to create lead: ${error.message}`)
+      } else {
+        console.log('Lead created successfully:', data)
+        setSuccess('Lead created successfully!')
+        setFormData({
+          first_name: '',
+          last_name: '',
+          email: '',
+          phone: '',
+          date_of_birth: '',
+          gender: '',
+          tobacco_use: false,
+          health_conditions: [],
+          coverage_amount: 0,
+          coverage_type: '',
+          premium_budget: 0,
+        })
+        setShowForm(false)
+      }
+    } catch (err) {
+      console.error('Unexpected error:', err)
+      setError(`Unexpected error: ${err instanceof Error ? err.message : 'Unknown error'}`)
     }
   }
 

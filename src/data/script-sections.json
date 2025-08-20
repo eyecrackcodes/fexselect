@@ -50,12 +50,6 @@
         },
         {
           "type": "input_field",
-          "id": "agent_producer_number",
-          "label": "National Producer Number",
-          "required": true
-        },
-        {
-          "type": "input_field",
           "id": "customer_state",
           "label": "Customer State",
           "required": true
@@ -475,6 +469,172 @@
               }
             ]
           }
+        },
+        {
+          "type": "agent_line",
+          "text": "Do you have high blood pressure?"
+        },
+        {
+          "type": "input_field",
+          "id": "blood_pressure",
+          "label": "High Blood Pressure",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true,
+          "branching": {
+            "Yes": [
+              {
+                "type": "agent_line",
+                "text": "Has your blood pressure medication been increased or changed in the last 12 months?"
+              },
+              {
+                "type": "input_field",
+                "id": "blood_pressure_medication_changed",
+                "label": "BP Medication Changed Recently",
+                "type": "radio",
+                "options": ["Yes", "No"],
+                "required": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "agent_line",
+          "text": "Do you have emphysema or COPD?"
+        },
+        {
+          "type": "input_field",
+          "id": "emphysema_copd",
+          "label": "Emphysema/COPD",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true,
+          "branching": {
+            "Yes": [
+              {
+                "type": "agent_line",
+                "text": "Do you use inhalers, nebulizer, or oxygen?"
+              },
+              {
+                "type": "input_field",
+                "id": "inhalers_nebulizer_oxygen",
+                "label": "Uses Inhalers/Nebulizer/Oxygen",
+                "type": "radio",
+                "options": ["Yes", "No"],
+                "required": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "agent_line",
+          "text": "Do you have any autoimmune disorders like lupus, rheumatoid arthritis, or multiple sclerosis?"
+        },
+        {
+          "type": "input_field",
+          "id": "autoimmune_disorders",
+          "label": "Autoimmune Disorders",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Do you have liver or kidney disease?"
+        },
+        {
+          "type": "input_field",
+          "id": "liver_kidney_disease",
+          "label": "Liver/Kidney Disease",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Have you ever been treated for alcohol or drug abuse?"
+        },
+        {
+          "type": "input_field",
+          "id": "alcohol_drug_treatment",
+          "label": "Alcohol/Drug Treatment",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Are you currently on disability?"
+        },
+        {
+          "type": "input_field",
+          "id": "disability_status",
+          "label": "Disability Status",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true,
+          "branching": {
+            "Yes": [
+              {
+                "type": "agent_line",
+                "text": "What is the reason for your disability?"
+              },
+              {
+                "type": "input_field",
+                "id": "disability_reason",
+                "label": "Disability Reason",
+                "type": "textarea",
+                "required": true
+              }
+            ]
+          }
+        },
+        {
+          "type": "agent_line",
+          "text": "Do you use a wheelchair, walker, or cane?"
+        },
+        {
+          "type": "input_field",
+          "id": "mobility_aids",
+          "label": "Mobility Aids",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Do you receive home health care or nursing care?"
+        },
+        {
+          "type": "input_field",
+          "id": "home_health_care",
+          "label": "Home Health Care",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Do you have any other health problems we haven't discussed?"
+        },
+        {
+          "type": "input_field",
+          "id": "other_health_problems",
+          "label": "Other Health Problems",
+          "type": "textarea",
+          "required": false
+        },
+        {
+          "type": "agent_line",
+          "text": "What medications are you currently taking?"
+        },
+        {
+          "type": "input_field",
+          "id": "medications",
+          "label": "Current Medications",
+          "type": "textarea",
+          "placeholder": "List all current medications",
+          "required": false
         }
       ]
     }

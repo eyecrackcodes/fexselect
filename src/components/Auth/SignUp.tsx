@@ -10,27 +10,19 @@ const SignUp: React.FC<SignUpProps> = ({ onToggleMode }) => {
   const [password, setPassword] = useState('')
   const [name, setName] = useState('')
   const [npnNumber, setNpnNumber] = useState('')
-  const [loading, setLoading] = useState(false)
-  const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
 
-  const { signUp } = useAuth()
+  const { signUp, authLoading, error, clearError } = useAuth()
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
-    setError('')
-    setSuccess(false)
+    clearError()
 
-    const { error } = await signUp(email, password, name, npnNumber)
+    const { error: signUpError } = await signUp(email, password, name, npnNumber)
 
-    if (error) {
-      setError(error.message)
-    } else {
+    if (!signUpError) {
       setSuccess(true)
     }
-
-    setLoading(false)
   }
 
   if (success) {
@@ -146,10 +138,10 @@ const SignUp: React.FC<SignUpProps> = ({ onToggleMode }) => {
           <div>
             <button
               type="submit"
-              disabled={loading}
+              disabled={authLoading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50"
             >
-              {loading ? 'Creating Account...' : 'Create Account'}
+              {authLoading ? 'Creating Account...' : 'Create Account'}
             </button>
           </div>
 

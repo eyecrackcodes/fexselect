@@ -99,6 +99,7 @@ export interface CustomerData {
   selected_plan?: string;
   coverage_amount?: number;
   monthly_premium?: number;
+  premium_budget?: number;
   selected_carrier?: string;
 }
 
