@@ -1,0 +1,161 @@
+{
+  "carriers": [
+    {
+      "id": "pioneer_american",
+      "name": "Pioneer American Insurance Co.",
+      "location": "Waco, Texas",
+      "description": "Member of American Amicable Group since 1910. Over 107 years, acquired by Industrial Alliance. Employs >5,000, manages >$109B assets.",
+      "rating": "A",
+      "ratingAgency": "A.M. Best",
+      "yearsInBusiness": 114,
+      "founded": 1910,
+      "specialties": ["Final Expense", "Whole Life", "Term Life"],
+      "coverage_types": {
+        "immediate": true,
+        "graded": false,
+        "return_of_premium": true
+      },
+      "return_of_premium_details": "If you were to pass away from an illness during the first 2 years, your beneficiary will receive all premiums paid plus 10%. For accidental death, your plan pays 100% in all years, starting day one (1)."
+    },
+    {
+      "id": "baltimore_life",
+      "name": "Baltimore Life Insurance Co.",
+      "location": "Baltimore, MD",
+      "description": "Assets >$1B. Operating in 49 states + DC since 1882, >135 years.",
+      "rating": "A-",
+      "ratingAgency": "A.M. Best",
+      "yearsInBusiness": 142,
+      "founded": 1882,
+      "specialties": ["Final Expense", "Whole Life"],
+      "coverage_types": {
+        "immediate": true,
+        "graded": true,
+        "return_of_premium": false
+      },
+      "graded_details": {
+        "year1": "25%",
+        "year2": "50%",
+        "year3_plus": "100%",
+        "accidental": "100% from day one"
+      }
+    },
+    {
+      "id": "american_home_life",
+      "name": "American Home Life",
+      "location": "Topeka, KS",
+      "description": "Founded in Topeka, KS in 1909 as Mutual Insurance Company. Policyholders own it; no shareholders, solely in policyholders' long-term interest.",
+      "rating": "B++",
+      "ratingAgency": "A.M. Best",
+      "yearsInBusiness": 115,
+      "founded": 1909,
+      "specialties": ["Final Expense", "Whole Life"],
+      "coverage_types": {
+        "immediate": true,
+        "graded": true,
+        "return_of_premium": true
+      },
+      "graded_details": {
+        "year1": "25%",
+        "year2": "50%",
+        "year3_plus": "100%",
+        "accidental": "100% from day one"
+      }
+    },
+    {
+      "id": "mutual_of_omaha",
+      "name": "Mutual of Omaha",
+      "location": "Omaha, NE",
+      "description": "In business since 1909. Offers insurance and financial products. Assets ~$31B. Respected in industry.",
+      "rating": "A+",
+      "ratingAgency": "A.M. Best",
+      "yearsInBusiness": 115,
+      "founded": 1909,
+      "assets": "$31B",
+      "specialties": ["Final Expense", "Whole Life", "Term Life", "Annuities"],
+      "coverage_types": {
+        "immediate": true,
+        "graded": false,
+        "return_of_premium": true
+      },
+      "return_of_premium_details": "2 years, 10%"
+    },
+    {
+      "id": "liberty_bankers",
+      "name": "Liberty Bankers Life",
+      "location": "Oklahoma City, OK",
+      "description": "Wholly owned subsidiary operating in 45 states + DC since 1905/1957. Relied on faithful protection. Assets >$1.035B, capital surplus $191.945M (2013).",
+      "rating": "B++",
+      "ratingAgency": "A.M. Best",
+      "yearsInBusiness": 119,
+      "founded": 1905,
+      "assets": "$1.035B",
+      "specialties": ["Final Expense", "Whole Life"],
+      "coverage_types": {
+        "immediate": true,
+        "graded": false,
+        "return_of_premium": true
+      },
+      "return_of_premium_details": "If you were to pass away from an illness during the first 3 years, your beneficiary will receive all premiums paid plus 10%. If death occurs in year 4 the family receives 100% of the FACE amount. However, in year 5, 105% of the FACE amount, and in year 6 your family receives 110% of the face amount. For example: in year 5 for a $10,000 policy your family would receive $10,500 and in year 6 it would increase to $11,000. For accidental death, your plan pays 100% in all years starting day one (1)."
+    },
+    {
+      "id": "aig",
+      "name": "AIG",
+      "location": "New York, NY",
+      "description": "World's largest life insurer. >18M customers in America. Founded 1919. Services in >80 countries.",
+      "rating": "A",
+      "ratingAgency": "A.M. Best",
+      "yearsInBusiness": 105,
+      "founded": 1919,
+      "customers": "18M+",
+      "specialties": ["Final Expense", "Whole Life", "Term Life", "Universal Life"],
+      "coverage_types": {
+        "immediate": true,
+        "graded": false,
+        "return_of_premium": true
+      },
+      "return_of_premium_details": "2 years, 10%"
+    },
+    {
+      "id": "foresters",
+      "name": "Foresters",
+      "location": "Toronto, Canada",
+      "description": "International life insurer, member-based, family-focused. >1M members in US, Canada, UK. Assets $8.3B, history >137 years.",
+      "rating": "A",
+      "ratingAgency": "A.M. Best",
+      "yearsInBusiness": 137,
+      "founded": 1887,
+      "assets": "$8.3B",
+      "members": "1M+",
+      "specialties": ["Final Expense", "Whole Life", "Children's Insurance"],
+      "coverage_types": {
+        "immediate": true,
+        "graded": true,
+        "return_of_premium": true
+      },
+      "graded_details": {
+        "year1": "30%",
+        "year2": "70%",
+        "year3_plus": "100%",
+        "accidental": "100% from day one"
+      },
+      "return_of_premium_details": "2 years, 10%"
+    },
+    {
+      "id": "americo",
+      "name": "Americo",
+      "location": "Kansas City, MO",
+      "description": "Family of insurers protecting families in 48 states + DC >100 years. Home office Kansas City, MO. Lead independent, privately held. Groups >$676M policies, $6.1B assets (2012).",
+      "rating": "B++",
+      "ratingAgency": "A.M. Best",
+      "yearsInBusiness": 100,
+      "founded": 1924,
+      "assets": "$6.1B",
+      "specialties": ["Final Expense", "Whole Life", "Annuities"],
+      "coverage_types": {
+        "immediate": true,
+        "graded": false,
+        "return_of_premium": false
+      }
+    }
+  ]
+}

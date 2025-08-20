@@ -1,0 +1,482 @@
+{
+  "sections": [
+    {
+      "id": "preamble",
+      "title": "Preamble (Inbound Call Greeting)",
+      "order": 1,
+      "content": [
+        {
+          "type": "agent_line",
+          "text": "Thank you for calling Final Expense Select, this is [agent full name], who do I have the pleasure of speaking with today?"
+        },
+        {
+          "type": "instruction",
+          "text": "[Type in the customer's First and Last name on the computer screen while you're talking]"
+        },
+        {
+          "type": "input_field",
+          "id": "customer_first_name",
+          "label": "Customer First Name",
+          "required": true
+        },
+        {
+          "type": "input_field",
+          "id": "customer_last_name",
+          "label": "Customer Last Name",
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Great, (Mr. / Ms. Customer's Last name) please feel free to call me (agent's first name). Do you mind if I call you (customer's first name)."
+        },
+        {
+          "type": "agent_line",
+          "text": "Before we get started, (customer's first name), I need to let you know that this call will be recorded for quality and training purposes."
+        },
+        {
+          "type": "agent_line",
+          "text": "Now (customer's first name), do you have a pen and paper; I'm going to give you some important information, okay?"
+        }
+      ]
+    },
+    {
+      "id": "company_introduction",
+      "title": "Company Introduction and Benefits Explanation",
+      "order": 2,
+      "content": [
+        {
+          "type": "agent_line",
+          "text": "Great! My Company is Final Expense Select, and my customer service telephone number is 1-800-511-7345, and our web address is www.finalexpenseselect.com. My National Producer number is ______. That number lets you know that we are licensed by the state of ______ and authorized to talk to you about final expense life and burial protection. We are also members of the U.S. Chamber of Commerce as well as Members of the West Florida Better Business Bureau, and have been awarded their highest rating of A+. My information shows your telephone number as ______ is that correct? (BBB-727-535-5522)"
+        },
+        {
+          "type": "input_field",
+          "id": "agent_producer_number",
+          "label": "National Producer Number",
+          "required": true
+        },
+        {
+          "type": "input_field",
+          "id": "customer_state",
+          "label": "Customer State",
+          "required": true
+        },
+        {
+          "type": "input_field",
+          "id": "customer_phone",
+          "label": "Customer Phone Number",
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Mr. / Ms. ______ final expense benefits are small, affordable, permanent whole life insurance policies that are regulated by the State of ______ for folks that live on a limited income each month like social security, disability and disabled vets. Best of all, they're permanent plans that never change."
+        },
+        {
+          "type": "agent_line",
+          "text": "Mr. / Ms. ______, since 1988, Final Expense Select has been working with all of the top companies in [STATE]. We don't work for those insurance companies; we work for our clients. Our job is to find the best insurance company, with the best price for our clients, based on your age and health. We do the shopping for you. Mr. / Ms. ______. Does that make sense to you?"
+        },
+        {
+          "type": "agent_line",
+          "text": "Some of the companies include Pioneer American Life, Baltimore Life, Mutual of Omaha, AIG, Foresters, and Liberty Bankers to name a few. These state approved whole life plans provide cash benefits for funeral and burial protection. Just like or TV commercial says, your premiums can never be increased and the cash benefits can never be reduced or canceled as long as you pay your monthly premiums, which can be as low as $1.00 per day. There are a few health questions and a free quote to qualify for the requested benefits and your benefits are secured for your family by applying for them over the telephone without spending any money today. Fair enough?"
+        }
+      ]
+    },
+    {
+      "id": "building_rapport",
+      "title": "Building Rapport",
+      "order": 3,
+      "content": [
+        {
+          "type": "instruction",
+          "text": "[SLOW DOWN - THE GOAL IS TO BUILD RAPPORT! IT'S ALL ABOUT THEM! REMEMBER: TO BUILD RAPPORT, YOU MUST LEARN ABOUT THEM - THEY MUST LEARN ABOUT YOU. TRY TO IDENTIFY COMMON GROUND WITH THEM AS MUCH AS POSSIBLE (WHAT DO YOU HAVE IN COMMON?) (THE FOLLOWING IS JUST A SMALL SAMPLING OF TOPIC IDEAS.)]"
+        },
+        {
+          "type": "agent_line",
+          "text": "Mr. / Ms. ______, now that we have that out of the way... I know [STATE] is a beautiful part of the country. So, how long have you been living in (client's city)?"
+        },
+        {
+          "type": "input_field",
+          "id": "customer_city",
+          "label": "Customer City",
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Are you married?"
+        },
+        {
+          "type": "input_field",
+          "id": "marital_status",
+          "label": "Marital Status",
+          "type": "select",
+          "options": ["Single", "Married", "Divorced", "Widowed"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Do you have children, grandchildren?"
+        },
+        {
+          "type": "input_field",
+          "id": "has_children",
+          "label": "Has Children/Grandchildren",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true,
+          "branching": {
+            "Yes": [
+              {
+                "type": "agent_line",
+                "text": "Do they live close by?"
+              },
+              {
+                "type": "agent_line",
+                "text": "How often do you see them?"
+              },
+              {
+                "type": "agent_line",
+                "text": "Would your children be the beneficiary of a plan or another family member?"
+              }
+            ]
+          }
+        },
+        {
+          "type": "agent_line",
+          "text": "Are you retired?"
+        },
+        {
+          "type": "input_field",
+          "id": "retirement_status",
+          "label": "Retirement Status",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true,
+          "branching": {
+            "Yes": [
+              {
+                "type": "agent_line",
+                "text": "What kind of work did you do before you retired? How long?"
+              },
+              {
+                "type": "input_field",
+                "id": "previous_occupation",
+                "label": "Previous Occupation",
+                "required": false
+              }
+            ],
+            "No": [
+              {
+                "type": "agent_line",
+                "text": "What kind of work do you do? How long?"
+              },
+              {
+                "type": "input_field",
+                "id": "current_occupation",
+                "label": "Current Occupation",
+                "required": false
+              }
+            ]
+          }
+        },
+        {
+          "type": "agent_line",
+          "text": "What do you like (or) get to do for fun?"
+        },
+        {
+          "type": "input_field",
+          "id": "hobbies_interests",
+          "label": "Hobbies/Interests",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "transition_qualifying",
+      "title": "Transition to Qualifying",
+      "order": 4,
+      "content": [
+        {
+          "type": "agent_line",
+          "text": "Well, I commend you for looking into this, (Client). Many families wait until it's too late. You are very wise for reaching out for my help and I thank you for sharing a little bit about yourself with me."
+        },
+        {
+          "type": "agent_line",
+          "text": "One of the most common concerns of the people I talk to every day is to JUST MAKE SURE their family DOESN'T HAVE TO DIG INTO THEIR POCKETS TO PAY FOR THEIR FUNERAL. Is your main concern trying to protect your family from basic funeral expenses or are you trying to leave them something extra? What is your main concern?"
+        },
+        {
+          "type": "input_field",
+          "id": "main_concern",
+          "label": "Customer's Main Concern",
+          "type": "textarea",
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Mr. / Ms. ______ let me make sure that I understand (repeat their main concern). Is that right? Okay, I can help with that."
+        },
+        {
+          "type": "agent_line",
+          "text": "Have you ever had to pay for a family member's funeral?"
+        },
+        {
+          "type": "input_field",
+          "id": "paid_for_funeral",
+          "label": "Paid for Family Funeral",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true,
+          "branching": {
+            "Yes": [
+              {
+                "type": "agent_line",
+                "text": "What was that like?"
+              },
+              {
+                "type": "agent_line",
+                "text": "What financial issues/concerns did you experience?"
+              },
+              {
+                "type": "input_field",
+                "id": "funeral_experience",
+                "label": "Funeral Experience Details",
+                "type": "textarea",
+                "required": false
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "preliminary_health",
+      "title": "Preliminary Health Introduction",
+      "order": 5,
+      "content": [
+        {
+          "type": "agent_line",
+          "text": "OK, (CLIENT), I really feel comfortable moving forward with you, because it's obvious you have a need and you really care about your family. Now, I promise to do everything I can to get you qualified for one of these STATE approved plans and any ADDITIONAL NO-COST benefits available in [STATE] as well."
+        },
+        {
+          "type": "agent_line",
+          "text": "Mr./Ms. ____ were you interested in protection for yourself or another member of the family?"
+        },
+        {
+          "type": "input_field",
+          "id": "protection_for",
+          "label": "Protection For",
+          "type": "select",
+          "options": ["Self", "Spouse", "Other Family Member"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Mr./Ms. ____ I need to ask you some preliminary health questions so I can see which company will give us the best value. Then we can look at that companies specific medical questions. This way we can find the best plan for you, at the best price. Please stop me if you have any questions. The more I know about your health the better quote you can get."
+        },
+        {
+          "type": "agent_line",
+          "text": "Your price is determined by three factors. #1 - amount of protection, #2 - your age, and #3 - your health. Mr./Ms. ____, how young are you?"
+        },
+        {
+          "type": "input_field",
+          "id": "customer_age",
+          "label": "Customer Age",
+          "type": "number",
+          "required": true
+        },
+        {
+          "type": "input_field",
+          "id": "customer_dob",
+          "label": "Date of Birth",
+          "type": "date",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "medical_questions",
+      "title": "Medical Questions",
+      "order": 6,
+      "content": [
+        {
+          "type": "instruction",
+          "text": "[Collect responses in input fields. Branch for follow-ups (e.g., if \"yes\" to diabetes, show sub-questions). After this section, auto-submit data to Google Form.]"
+        },
+        {
+          "type": "agent_line",
+          "text": "Have you used tobacco in any form in the last 12 months?"
+        },
+        {
+          "type": "input_field",
+          "id": "tobacco_use",
+          "label": "Tobacco Use (Last 12 months)",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "What is your approximate height and weight?"
+        },
+        {
+          "type": "input_field",
+          "id": "height",
+          "label": "Height",
+          "placeholder": "e.g., 5'8\"",
+          "required": true
+        },
+        {
+          "type": "input_field",
+          "id": "weight",
+          "label": "Weight (lbs)",
+          "type": "number",
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Do you have heart problems?"
+        },
+        {
+          "type": "input_field",
+          "id": "heart_problems",
+          "label": "Heart Problems",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Have you had a stroke?"
+        },
+        {
+          "type": "input_field",
+          "id": "stroke_history",
+          "label": "Stroke History",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Internal Cancer?"
+        },
+        {
+          "type": "input_field",
+          "id": "cancer_history",
+          "label": "Cancer History",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Have you tested positive for AIDS or HIV? Have you been diagnosed with a terminal illness (12 months or less to live)?"
+        },
+        {
+          "type": "input_field",
+          "id": "aids_hiv_terminal",
+          "label": "AIDS/HIV/Terminal Illness",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Diabetes?"
+        },
+        {
+          "type": "input_field",
+          "id": "diabetes",
+          "label": "Diabetes",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true,
+          "branching": {
+            "Yes": [
+              {
+                "type": "agent_line",
+                "text": "Pills or insulin?"
+              },
+              {
+                "type": "input_field",
+                "id": "diabetes_treatment",
+                "label": "Diabetes Treatment",
+                "type": "radio",
+                "options": ["Pills", "Insulin", "Both"],
+                "required": true,
+                "branching": {
+                  "Pills": [
+                    {
+                      "type": "agent_line",
+                      "text": "Has medication been increased or changed in the last 12 to 24 months?"
+                    },
+                    {
+                      "type": "input_field",
+                      "id": "diabetes_medication_changed",
+                      "label": "Medication Changed Recently",
+                      "type": "radio",
+                      "options": ["Yes", "No"],
+                      "required": true
+                    },
+                    {
+                      "type": "agent_line",
+                      "text": "Have you ever used insulin?"
+                    },
+                    {
+                      "type": "input_field",
+                      "id": "ever_used_insulin",
+                      "label": "Ever Used Insulin",
+                      "type": "radio",
+                      "options": ["Yes", "No"],
+                      "required": true
+                    }
+                  ],
+                  "Insulin": [
+                    {
+                      "type": "agent_line",
+                      "text": "Was it prior to age 50?"
+                    },
+                    {
+                      "type": "input_field",
+                      "id": "insulin_before_50",
+                      "label": "Insulin Started Before Age 50",
+                      "type": "radio",
+                      "options": ["Yes", "No"],
+                      "required": true
+                    }
+                  ]
+                }
+              },
+              {
+                "type": "agent_line",
+                "text": "Complications of Diabetes?"
+              },
+              {
+                "type": "input_field",
+                "id": "diabetes_complications",
+                "label": "Diabetes Complications",
+                "type": "radio",
+                "options": ["Yes", "No"],
+                "required": true,
+                "branching": {
+                  "Yes": [
+                    {
+                      "type": "agent_line",
+                      "text": "What complications? (Neuropathy, Retinopathy, Nephropathy, or Insulin Shock)?"
+                    },
+                    {
+                      "type": "input_field",
+                      "id": "diabetes_complication_types",
+                      "label": "Types of Complications",
+                      "type": "checkbox",
+                      "options": ["Neuropathy", "Retinopathy", "Nephropathy", "Insulin Shock", "Other"],
+                      "required": true
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}
