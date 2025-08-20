@@ -1,20 +1,27 @@
 import React, { useState } from 'react';
 import './App.css';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
-import { LeadProvider } from './contexts/LeadContext';
+import { LeadProvider, useLead } from './contexts/LeadContext';
 import Login from './components/Auth/Login';
 import SignUp from './components/Auth/SignUp';
-import Navigation from './components/Navigation/Navigation';
 import ScriptDisplay from './components/ScriptDisplay/ScriptDisplay';
 import QuoteCalculator from './components/QuoteCalculator/QuoteCalculator';
 import CarrierReference from './components/CarrierReference/CarrierReference';
 import CustomerDataSummary from './components/CustomerDataSummary/CustomerDataSummary';
 import AgentProfile from './components/AgentProfile/AgentProfile';
 import LeadManagement from './components/LeadManagement/LeadManagement';
+import scriptData from './data/script-sections.json';
+import carrierData from './data/carriers.json';
+import { ScriptData, Carrier } from './types';
 
 const AuthenticatedApp: React.FC = () => {
   const { user, agent, loading } = useAuth();
+  const { currentLead } = useLead();
   const [activeTab, setActiveTab] = useState('leads');
+  const [customerData, setCustomerData] = useState({});
+  
+  const sections = (scriptData as ScriptData).sections;
+  const carriers = (carrierData as { carriers: Carrier[] }).carriers;
 
   if (loading) {
     return (
@@ -53,11 +60,32 @@ const AuthenticatedApp: React.FC = () => {
       case 'leads':
         return <LeadManagement />;
       case 'script':
-        return <ScriptDisplay />;
+        return (
+          <ScriptDisplay
+            section={sections[0]}
+            customerData={customerData}
+            onDataChange={(fieldId: string, value: any) => {
+              setCustomerData(prev => ({ ...prev, [fieldId]: value }));
+            }}
+          />
+        );
       case 'calculator':
-        return <QuoteCalculator />;
+        return (
+          <QuoteCalculator
+            customerData={customerData}
+            carriers={carriers}
+            onQuoteSelected={(quote: any) => {
+              console.log('Quote selected:', quote);
+            }}
+          />
+        );
       case 'carriers':
-        return <CarrierReference />;
+        return (
+          <CarrierReference
+            carriers={carriers}
+            onClose={() => {}}
+          />
+        );
       case 'summary':
         return <CustomerDataSummary />;
       case 'profile':
