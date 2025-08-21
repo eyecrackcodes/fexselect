@@ -101,7 +101,7 @@
           "type": "input_field",
           "id": "marital_status",
           "label": "Marital Status",
-          "type": "select",
+          "inputType": "select",
           "options": ["Single", "Married", "Divorced", "Widowed"],
           "required": true
         },
@@ -113,7 +113,7 @@
           "type": "input_field",
           "id": "has_children",
           "label": "Has Children/Grandchildren",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true,
           "branching": {
@@ -141,7 +141,7 @@
           "type": "input_field",
           "id": "retirement_status",
           "label": "Retirement Status",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true,
           "branching": {
@@ -200,7 +200,7 @@
           "type": "input_field",
           "id": "main_concern",
           "label": "Customer's Main Concern",
-          "type": "textarea",
+          "inputType": "textarea",
           "required": true
         },
         {
@@ -215,7 +215,7 @@
           "type": "input_field",
           "id": "paid_for_funeral",
           "label": "Paid for Family Funeral",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true,
           "branching": {
@@ -232,7 +232,7 @@
                 "type": "input_field",
                 "id": "funeral_experience",
                 "label": "Funeral Experience Details",
-                "type": "textarea",
+                "inputType": "textarea",
                 "required": false
               }
             ]
@@ -257,7 +257,7 @@
           "type": "input_field",
           "id": "protection_for",
           "label": "Protection For",
-          "type": "select",
+          "inputType": "select",
           "options": ["Self", "Spouse", "Other Family Member"],
           "required": true
         },
@@ -273,7 +273,7 @@
           "type": "input_field",
           "id": "customer_age",
           "label": "Customer Age",
-          "type": "number",
+          "inputType": "number",
           "required": true
         },
         {
@@ -302,7 +302,7 @@
           "type": "input_field",
           "id": "tobacco_use",
           "label": "Tobacco Use (Last 12 months)",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -321,7 +321,7 @@
           "type": "input_field",
           "id": "weight",
           "label": "Weight (lbs)",
-          "type": "number",
+          "inputType": "number",
           "required": true
         },
         {
@@ -332,7 +332,7 @@
           "type": "input_field",
           "id": "heart_problems",
           "label": "Heart Problems",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -344,7 +344,7 @@
           "type": "input_field",
           "id": "stroke_history",
           "label": "Stroke History",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -356,7 +356,7 @@
           "type": "input_field",
           "id": "cancer_history",
           "label": "Cancer History",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -368,7 +368,7 @@
           "type": "input_field",
           "id": "aids_hiv_terminal",
           "label": "AIDS/HIV/Terminal Illness",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -380,7 +380,7 @@
           "type": "input_field",
           "id": "diabetes",
           "label": "Diabetes",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true,
           "branching": {
@@ -393,7 +393,7 @@
                 "type": "input_field",
                 "id": "diabetes_treatment",
                 "label": "Diabetes Treatment",
-                "type": "radio",
+                "inputType": "radio",
                 "options": ["Pills", "Insulin", "Both"],
                 "required": true,
                 "branching": {
@@ -406,7 +406,7 @@
                       "type": "input_field",
                       "id": "diabetes_medication_changed",
                       "label": "Medication Changed Recently",
-                      "type": "radio",
+                      "inputType": "radio",
                       "options": ["Yes", "No"],
                       "required": true
                     },
@@ -418,7 +418,7 @@
                       "type": "input_field",
                       "id": "ever_used_insulin",
                       "label": "Ever Used Insulin",
-                      "type": "radio",
+                      "inputType": "radio",
                       "options": ["Yes", "No"],
                       "required": true
                     }
@@ -432,7 +432,7 @@
                       "type": "input_field",
                       "id": "insulin_before_50",
                       "label": "Insulin Started Before Age 50",
-                      "type": "radio",
+                      "inputType": "radio",
                       "options": ["Yes", "No"],
                       "required": true
                     }
@@ -447,7 +447,7 @@
                 "type": "input_field",
                 "id": "diabetes_complications",
                 "label": "Diabetes Complications",
-                "type": "radio",
+                "inputType": "radio",
                 "options": ["Yes", "No"],
                 "required": true,
                 "branching": {
@@ -460,7 +460,7 @@
                       "type": "input_field",
                       "id": "diabetes_complication_types",
                       "label": "Types of Complications",
-                      "type": "checkbox",
+                      "inputType": "checkbox",
                       "options": ["Neuropathy", "Retinopathy", "Nephropathy", "Insulin Shock", "Other"],
                       "required": true
                     }
@@ -478,7 +478,7 @@
           "type": "input_field",
           "id": "blood_pressure",
           "label": "High Blood Pressure",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true,
           "branching": {
@@ -491,7 +491,7 @@
                 "type": "input_field",
                 "id": "blood_pressure_medication_changed",
                 "label": "BP Medication Changed Recently",
-                "type": "radio",
+                "inputType": "radio",
                 "options": ["Yes", "No"],
                 "required": true
               }
@@ -506,7 +506,7 @@
           "type": "input_field",
           "id": "emphysema_copd",
           "label": "Emphysema/COPD",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true,
           "branching": {
@@ -519,7 +519,7 @@
                 "type": "input_field",
                 "id": "inhalers_nebulizer_oxygen",
                 "label": "Uses Inhalers/Nebulizer/Oxygen",
-                "type": "radio",
+                "inputType": "radio",
                 "options": ["Yes", "No"],
                 "required": true
               }
@@ -534,7 +534,7 @@
           "type": "input_field",
           "id": "autoimmune_disorders",
           "label": "Autoimmune Disorders",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -546,7 +546,7 @@
           "type": "input_field",
           "id": "liver_kidney_disease",
           "label": "Liver/Kidney Disease",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -558,7 +558,7 @@
           "type": "input_field",
           "id": "alcohol_drug_treatment",
           "label": "Alcohol/Drug Treatment",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -570,7 +570,7 @@
           "type": "input_field",
           "id": "disability_status",
           "label": "Disability Status",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true,
           "branching": {
@@ -583,7 +583,7 @@
                 "type": "input_field",
                 "id": "disability_reason",
                 "label": "Disability Reason",
-                "type": "textarea",
+                "inputType": "textarea",
                 "required": true
               }
             ]
@@ -597,7 +597,7 @@
           "type": "input_field",
           "id": "mobility_aids",
           "label": "Mobility Aids",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -609,7 +609,7 @@
           "type": "input_field",
           "id": "home_health_care",
           "label": "Home Health Care",
-          "type": "radio",
+          "inputType": "radio",
           "options": ["Yes", "No"],
           "required": true
         },
@@ -621,7 +621,7 @@
           "type": "input_field",
           "id": "other_health_problems",
           "label": "Other Health Problems",
-          "type": "textarea",
+          "inputType": "textarea",
           "required": false
         },
         {
@@ -632,8 +632,8 @@
           "type": "input_field",
           "id": "medications",
           "label": "Current Medications",
-          "type": "textarea",
-          "placeholder": "List all current medications",
+          "inputType": "textarea",
+          "placeholder": "List all current medications (separate with commas)",
           "required": false
         }
       ]

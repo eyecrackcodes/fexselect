@@ -1,31 +1,76 @@
-import { createClient } from '@supabase/supabase-js'
+import { createClient, SupabaseClient } from '@supabase/supabase-js'
 
 const supabaseUrl = process.env.REACT_APP_SUPABASE_URL
 const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY
 
-console.log('Supabase URL:', supabaseUrl ? 'Set' : 'Not set')
-console.log('Supabase Key:', supabaseAnonKey ? 'Set' : 'Not set')
+// Enhanced logging for debugging
+console.log('🔧 Supabase Configuration:')
+console.log('URL:', supabaseUrl ? `${supabaseUrl.substring(0, 30)}...` : '❌ Not set')
+console.log('Key:', supabaseAnonKey ? '✅ Set' : '❌ Not set')
+
+// Create a placeholder client if credentials are missing
+let supabase: SupabaseClient
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.error('Environment variables:', {
-    REACT_APP_SUPABASE_URL: supabaseUrl,
-    REACT_APP_SUPABASE_ANON_KEY: supabaseAnonKey ? '[HIDDEN]' : 'Not set'
+  console.error('⚠️ Missing Supabase environment variables!')
+  console.error('Please follow these steps:')
+  console.error('1. Run: node setup-env.js')
+  console.error('2. Update the .env file with your Supabase credentials')
+  console.error('3. Restart your development server')
+  console.error('')
+  console.error('You can find your credentials at:')
+  console.error('URL: Supabase Dashboard > Settings > API > Project URL')
+  console.error('Key: Supabase Dashboard > Settings > API > anon public key')
+  
+  // Create a dummy client to prevent app crashes
+  // This will fail gracefully when methods are called
+  supabase = {
+    auth: {
+      getSession: async () => ({ data: { session: null }, error: new Error('Supabase not configured') }),
+      signInWithPassword: async () => ({ data: { user: null, session: null }, error: new Error('Supabase not configured') }),
+      signUp: async () => ({ data: { user: null, session: null }, error: new Error('Supabase not configured') }),
+      signOut: async () => ({ error: new Error('Supabase not configured') }),
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } })
+    },
+    from: () => ({
+      select: () => ({
+        eq: () => ({
+          single: async () => ({ data: null, error: new Error('Supabase not configured') })
+        })
+      }),
+      insert: async () => ({ data: null, error: new Error('Supabase not configured') }),
+      upsert: async () => ({ data: null, error: new Error('Supabase not configured') }),
+    })
+  } as any
+} else {
+  // Create the Supabase client with simplified configuration
+  // Removing custom fetch to avoid potential issues
+  supabase = createClient(supabaseUrl, supabaseAnonKey, {
+    auth: {
+      persistSession: true,
+      autoRefreshToken: true,
+      detectSessionInUrl: true
+    }
   })
-  throw new Error('Missing Supabase environment variables. Please check your .env file.')
+
+  // Test connection with simpler approach
+  if (typeof window !== 'undefined') {
+    // Only run in browser environment
+    supabase.auth.getSession()
+      .then(({ data, error }) => {
+        if (error) {
+          console.error('❌ Supabase auth error:', error.message)
+        } else {
+          console.log('✅ Supabase client initialized successfully')
+        }
+      })
+      .catch((error) => {
+        console.error('❌ Failed to initialize Supabase:', error)
+      })
+  }
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey)
-
-// Test connection
-supabase.auth.getSession().then(({ data, error }) => {
-  if (error) {
-    console.error('Supabase connection error:', error)
-  } else {
-    console.log('Supabase connection successful')
-  }
-}).catch((error) => {
-  console.error('Failed to connect to Supabase:', error)
-})
+export { supabase }
 
 // Database types
 export interface Agent {

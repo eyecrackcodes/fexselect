@@ -82,6 +82,10 @@ export interface CustomerData {
   // Banking Information
   account_type?: string;
   draft_date?: string;
+  name_of_bank?: string;
+  name_on_account?: string;
+  routing_number?: string;
+  account_number?: string;
   
   // Beneficiary Information
   primary_beneficiary?: string;
@@ -101,6 +105,13 @@ export interface CustomerData {
   monthly_premium?: number;
   premium_budget?: number;
   selected_carrier?: string;
+}
+
+// Google Forms Integration Types
+export interface GoogleFormSubmission {
+  success: boolean;
+  submissionId?: string;
+  error?: string;
 }
 
 // Carrier Types

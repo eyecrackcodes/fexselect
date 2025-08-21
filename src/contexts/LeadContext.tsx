@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react'
 import { supabase, Lead } from '../lib/supabase'
-import { useAuth } from './AuthContext'
+import { useAuth } from './ClerkAuthContext'
 import { CustomerData } from '../types'
 
 interface LeadContextType {
@@ -29,23 +29,23 @@ export const LeadProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [leads, setLeads] = useState<Lead[]>([])
   const [currentLead, setCurrentLead] = useState<Lead | null>(null)
   const [loading, setLoading] = useState(false)
-  const { user } = useAuth()
+  const { agent } = useAuth()
 
   useEffect(() => {
-    if (user) {
+    if (agent) {
       fetchLeads()
     }
-  }, [user])
+  }, [agent])
 
   const fetchLeads = async () => {
-    if (!user) return
+    if (!agent) return
 
     setLoading(true)
     try {
       const { data, error } = await supabase
         .from('leads')
         .select('*')
-        .eq('agent_id', user.id)
+        .eq('agent_id', agent.id)
         .order('created_at', { ascending: false })
 
       if (error) {
@@ -61,17 +61,17 @@ export const LeadProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const createLead = async (leadData: Partial<Lead>) => {
-    if (!user) {
-      console.error('No user logged in')
-      return { data: null, error: new Error('No user logged in') }
+    if (!agent) {
+      console.error('No agent profile found')
+      return { data: null, error: new Error('No agent profile found') }
     }
 
-    console.log('Creating lead with user ID:', user.id)
+    console.log('Creating lead with agent ID:', agent.id)
     console.log('Lead data:', leadData)
 
     const newLead = {
       ...leadData,
-      agent_id: user.id,
+      agent_id: agent.id,
       created_at: new Date().toISOString(),
       updated_at: new Date().toISOString(),
     }
@@ -141,13 +141,13 @@ export const LeadProvider: React.FC<{ children: React.ReactNode }> = ({ children
   }
 
   const createLeadFromScriptData = async (customerData: CustomerData) => {
-    if (!user) {
-      console.error('No user logged in')
-      return { data: null, error: new Error('No user logged in') }
+    if (!agent) {
+      console.error('No agent profile found')
+      return { data: null, error: new Error('No agent profile found') }
     }
 
-    // Map CustomerData to Lead format
-    const leadData: Partial<Lead> = {
+    // Map CustomerData to Lead format with enhanced fields
+    const leadData: any = {
       first_name: customerData.customer_first_name || '',
       last_name: customerData.customer_last_name || '',
       email: customerData.email,
@@ -156,7 +156,65 @@ export const LeadProvider: React.FC<{ children: React.ReactNode }> = ({ children
       tobacco_use: customerData.tobacco_use === 'yes',
       coverage_amount: customerData.coverage_amount || (customerData.selected_plan ? parseInt(customerData.selected_plan) : undefined),
       premium_budget: customerData.premium_budget || customerData.monthly_premium,
-      // Map health conditions from various medical fields
+      
+      // Additional personal information
+      state: customerData.customer_state,
+      city: customerData.customer_city,
+      address: customerData.address,
+      alternate_phone: customerData.alternate_phone,
+      age: customerData.customer_age,
+      
+      // Rapport building information
+      marital_status: customerData.marital_status,
+      has_children: customerData.has_children,
+      retirement_status: customerData.retirement_status,
+      previous_occupation: customerData.previous_occupation,
+      current_occupation: customerData.current_occupation,
+      hobbies_interests: customerData.hobbies_interests,
+      main_concern: customerData.main_concern,
+      
+      // Medical information
+      height: customerData.height,
+      weight: customerData.weight,
+      diabetes: customerData.diabetes === 'yes',
+      diabetes_details: customerData.diabetes === 'yes' ? {
+        treatment: customerData.diabetes_treatment,
+        medication_changed: customerData.diabetes_medication_changed,
+        ever_used_insulin: customerData.ever_used_insulin,
+        insulin_before_50: customerData.insulin_before_50,
+        complications: customerData.diabetes_complications,
+        complication_types: customerData.diabetes_complication_types
+      } : null,
+      blood_pressure: customerData.blood_pressure === 'yes',
+      heart_problems: customerData.heart_problems === 'yes',
+      stroke_history: customerData.stroke_history === 'yes',
+      cancer_history: customerData.cancer_history === 'yes',
+      copd_emphysema: customerData.emphysema_copd === 'yes',
+      other_health_conditions: customerData.other_health_problems,
+      medications: customerData.medications 
+        ? (typeof customerData.medications === 'string' 
+          ? (customerData.medications as string).split(',').map((med: string) => med.trim()).filter((med: string) => med.length > 0)
+          : customerData.medications)
+        : [],
+      primary_doctor: customerData.primary_doctor,
+      
+      // Beneficiary information
+      primary_beneficiary: customerData.primary_beneficiary,
+      primary_beneficiary_relationship: customerData.primary_beneficiary_relationship,
+      contingent_beneficiary: customerData.contingent_beneficiary,
+      contingent_beneficiary_relationship: customerData.contingent_beneficiary_relationship,
+      
+      // Quote/Policy information
+      selected_carrier: customerData.selected_carrier,
+      selected_plan: customerData.selected_plan,
+      monthly_premium: customerData.monthly_premium,
+      account_type: customerData.account_type,
+      draft_date: customerData.draft_date,
+      
+      // Store complete customer data as JSON for full record keeping
+      customer_data: customerData,
+      
+      // Map health conditions for backward compatibility
       health_conditions: [
         customerData.heart_problems === 'yes' ? 'Heart Problems' : null,
         customerData.stroke_history === 'yes' ? 'Stroke History' : null,
@@ -171,7 +229,19 @@ export const LeadProvider: React.FC<{ children: React.ReactNode }> = ({ children
     console.log('Creating lead from script data:', leadData)
     console.log('Original customer data:', customerData)
 
-    return await createLead(leadData)
+    // Temporary: Remove fields that might not exist in the database yet
+    // This prevents errors while the user updates their database schema
+    const fieldsToExclude = ['account_type', 'draft_date', 'selected_carrier', 'selected_plan', 'monthly_premium'];
+    const filteredLeadData = Object.keys(leadData).reduce((acc, key) => {
+      if (!fieldsToExclude.includes(key)) {
+        acc[key] = leadData[key];
+      }
+      return acc;
+    }, {} as any);
+
+    console.log('Creating lead with filtered data:', filteredLeadData)
+    
+    return await createLead(filteredLeadData)
   }
 
   const value = {

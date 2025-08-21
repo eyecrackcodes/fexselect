@@ -1,0 +1,131 @@
+{
+  "additionalSections": [
+    {
+      "id": "beneficiary_information",
+      "title": "Beneficiary Information",
+      "order": 9,
+      "content": [
+        {
+          "type": "agent_line",
+          "text": "Now I need to collect some information about your beneficiaries. Who would you like to be the primary beneficiary of this policy?"
+        },
+        {
+          "type": "input_field",
+          "id": "primary_beneficiary",
+          "label": "Primary Beneficiary Name",
+          "placeholder": "Full name of primary beneficiary",
+          "required": true
+        },
+        {
+          "type": "input_field",
+          "id": "primary_beneficiary_relationship",
+          "label": "Relationship to Primary Beneficiary",
+          "type": "select",
+          "options": ["Spouse", "Child", "Parent", "Sibling", "Other Relative", "Friend", "Trust", "Estate"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "Would you like to name a contingent (backup) beneficiary?"
+        },
+        {
+          "type": "input_field",
+          "id": "has_contingent_beneficiary",
+          "label": "Add Contingent Beneficiary?",
+          "type": "radio",
+          "options": ["Yes", "No"],
+          "required": true,
+          "branching": {
+            "Yes": [
+              {
+                "type": "input_field",
+                "id": "contingent_beneficiary",
+                "label": "Contingent Beneficiary Name",
+                "placeholder": "Full name of contingent beneficiary",
+                "required": true
+              },
+              {
+                "type": "input_field",
+                "id": "contingent_beneficiary_relationship",
+                "label": "Relationship to Contingent Beneficiary",
+                "type": "select",
+                "options": ["Spouse", "Child", "Parent", "Sibling", "Other Relative", "Friend", "Trust", "Estate"],
+                "required": true
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "banking_information",
+      "title": "Banking Information",
+      "order": 10,
+      "content": [
+        {
+          "type": "agent_line",
+          "text": "To set up your automatic monthly premium payments, I'll need to know what type of account you'd like to use."
+        },
+        {
+          "type": "input_field",
+          "id": "account_type",
+          "label": "Account Type",
+          "type": "select",
+          "options": ["Checking", "Savings"],
+          "required": true
+        },
+        {
+          "type": "agent_line",
+          "text": "What day of the month would work best for your automatic draft? Many people choose the 3rd after their Social Security arrives."
+        },
+        {
+          "type": "input_field",
+          "id": "draft_date",
+          "label": "Monthly Draft Date",
+          "type": "select",
+          "options": ["1st", "3rd", "5th", "10th", "15th", "20th", "25th"],
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "additional_contact",
+      "title": "Additional Contact Information",
+      "order": 11,
+      "content": [
+        {
+          "type": "agent_line",
+          "text": "Let me collect some additional contact information to complete your application."
+        },
+        {
+          "type": "input_field",
+          "id": "address",
+          "label": "Street Address",
+          "placeholder": "123 Main St",
+          "required": false
+        },
+        {
+          "type": "input_field",
+          "id": "alternate_phone",
+          "label": "Alternate Phone Number",
+          "placeholder": "(555) 123-4567",
+          "required": false
+        },
+        {
+          "type": "input_field",
+          "id": "email",
+          "label": "Email Address",
+          "placeholder": "email@example.com",
+          "required": false
+        },
+        {
+          "type": "input_field",
+          "id": "primary_doctor",
+          "label": "Primary Doctor Name",
+          "placeholder": "Dr. Smith",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

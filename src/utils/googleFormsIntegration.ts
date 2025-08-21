@@ -1,4 +1,5 @@
 import { CustomerData, GoogleFormSubmission } from '../types';
+import { transformDataForGoogleForm } from './googleFormsDataTransformer';
 
 // Google Forms integration utility
 export class GoogleFormsIntegration {
@@ -24,20 +25,15 @@ export class GoogleFormsIntegration {
 
     const url = new URL(this.formUrl);
     
+    // Transform the data to match Google Form fields
+    const transformedData = transformDataForGoogleForm(customerData);
+    
     // Add pre-filled parameters based on field mappings
     Object.entries(this.fieldMappings).forEach(([fieldId, formFieldId]) => {
-      const value = customerData[fieldId as keyof CustomerData];
+      const value = transformedData[fieldId];
       if (value !== undefined && value !== null && value !== '') {
-        // Handle different data types
-        let formattedValue: string;
-        if (Array.isArray(value)) {
-          formattedValue = value.join(', ');
-        } else {
-          formattedValue = String(value);
-        }
-        
         // Google Forms uses entry.XXXXXX format for pre-filled fields
-        url.searchParams.set(`entry.${formFieldId}`, formattedValue);
+        url.searchParams.set(`entry.${formFieldId}`, value);
       }
     });
 
